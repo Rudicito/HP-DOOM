@@ -10,7 +10,7 @@ from view_renderer import ViewRenderer
 
 
 class DoomEngine:
-    def __init__(self, wad_path='wad/DOOM1.WAD'):
+    def __init__(self, wad_path='DOOM1.WAD'):
         self.wad_path = wad_path
         self.screen = pg.display.set_mode(WIN_RES, pg.SCALED)
         self.framebuffer = pg.surfarray.array3d(self.screen)
