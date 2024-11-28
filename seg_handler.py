@@ -15,7 +15,7 @@ class SegHandler:
         #
         self.seg = None
         self.rw_angle1 = None
-        self.screen_range: set = None
+        self.screen_range = None
         self.x_to_angle = self.get_x_to_angle_table()
         self.upper_clip, self.lower_clip = [], []
 
@@ -235,7 +235,8 @@ class SegHandler:
             lower_tex_alt += side.y_offset
 
         # determine how the wall textures are horizontally aligned
-        if seg_textured:= b_draw_upper_wall or b_draw_lower_wall:
+        seg_textured = b_draw_upper_wall or b_draw_lower_wall
+        if seg_textured:
             rw_offset = hypotenuse * math.sin(math.radians(offset_angle))
             rw_offset += seg.offset + side.x_offset
             #
@@ -339,7 +340,8 @@ class SegHandler:
     def clip_portal_walls(self, x_start, x_end):
         curr_wall = set(range(x_start, x_end))
         #
-        if intersection := curr_wall & self.screen_range:
+        intersection = curr_wall & self.screen_range
+        if intersection:
             #
             if len(intersection) == len(curr_wall):
                 self.draw_portal_wall_range(x_start, x_end - 1)
@@ -357,7 +359,8 @@ class SegHandler:
         if self.screen_range:
             curr_wall = set(range(x_start, x_end))
             #
-            if intersection := curr_wall & self.screen_range:
+            intersection = curr_wall & self.screen_range
+            if intersection:
                 #
                 if len(intersection) == len(curr_wall):
                     self.draw_solid_wall_range(x_start, x_end - 1)

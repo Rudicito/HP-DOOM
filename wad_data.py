@@ -114,7 +114,7 @@ class WADData:
     def print_attrs(obj):
         print()
         for attr in obj.__slots__:
-            print(eval(f'obj.{attr}'), end=' ')
+            print(getattr(obj, attr), end=' ')
 
     def get_lump_data(self, reader_func, lump_index, num_bytes, header_length=0):
         lump_info = self.reader.directory[lump_index]

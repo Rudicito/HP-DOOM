@@ -138,7 +138,7 @@ class AssetData:
             tex_map.name: Texture(self, tex_map).image for tex_map in texture_maps
         }
         # flat textures
-        self.textures |= self.get_flats()
+        self.textures.update(self.get_flats())
 
         # --------------------------------------------------------------------------- #
         # sky

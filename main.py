@@ -53,6 +53,9 @@ class DoomEngine:
             self.draw()
 
 
-if __name__ == '__main__':
+
+try:
     doom = DoomEngine()
     doom.run()
+except KeyboardInterrupt:
+    pass

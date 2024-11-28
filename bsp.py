@@ -79,7 +79,8 @@ class BSP:
 
         for i in range(sub_sector.seg_count):
             seg = self.segs[sub_sector.first_seg_id + i]
-            if result := self.add_segment_to_fov(seg.start_vertex, seg.end_vertex):
+            result = self.add_segment_to_fov(seg.start_vertex, seg.end_vertex)
+            if result:
                 self.engine.seg_handler.classify_segment(seg, *result)
 
     @staticmethod

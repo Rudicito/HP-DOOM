@@ -243,7 +243,7 @@ class WADReader:
     def read_string(self, offset, num_bytes=8):
         # c - char
         return ''.join(b.decode('ascii') for b in
-                       self.read_bytes(offset, num_bytes, byte_format='c' * num_bytes)
+                       self.read_bytes(offset, num_bytes, byte_format='1s' * num_bytes)
                        if ord(b) != 0).upper()
 
     def read_bytes(self, offset, num_bytes, byte_format):
