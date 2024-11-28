@@ -26,12 +26,12 @@ class ViewRenderer:
         pos = (H_WIDTH - img.get_width() // 2, HEIGHT - img.get_height())
         self.framebuffer.blit_texture(img, pos)
 
-    def draw_palette(self):
-        pal, size = self.palette, 10
-        for ix in range(16):
-            for iy in range(16):
-                col = pal[iy * 16 + ix]
-                gfx.box(self.screen, (ix * size, iy * size, size, size), col)
+    # def draw_palette(self):
+    #     pal, size = self.palette, 10
+    #     for ix in range(16):
+    #         for iy in range(16):
+    #             col = pal[iy * 16 + ix]
+    #             gfx.box(self.screen, (ix * size, iy * size, size, size), col)
 
     def get_color(self, tex, light_level):
         str_light = str(light_level)
