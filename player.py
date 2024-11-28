@@ -1,11 +1,11 @@
 from settings import *
-from pygame.math import Vector2 as vec2
-import pygame as pg
+from vector2 import Vector2 as vec2
 
 
 class Player:
     def __init__(self, engine):
         self.engine = engine
+        self.keys = self.engine.keys
         self.thing = engine.wad_data.things[0]
         self.pos = self.thing.pos
         self.angle = self.thing.angle
@@ -33,20 +33,20 @@ class Player:
         speed = PLAYER_SPEED * self.engine.dt
         rot_speed = PLAYER_ROT_SPEED * self.engine.dt
 
-        key_state = pg.key.get_pressed()
-        if key_state[pg.K_LEFT]:
+        self.keys.get()
+        if self.keys.is_pressed(self.keys.left):
             self.angle += rot_speed
-        if key_state[pg.K_RIGHT]:
+        if self.keys.is_pressed(self.keys.right):
             self.angle -= rot_speed
 
         inc = vec2(0)
-        if key_state[pg.K_a]:
-            inc += vec2(0, speed)
-        if key_state[pg.K_d]:
-            inc += vec2(0, -speed)
-        if key_state[pg.K_w]:
+        # if key_state[pg.K_a]:
+        #     inc += vec2(0, speed)
+        # if key_state[pg.K_d]:
+        #     inc += vec2(0, -speed)
+        if self.keys.is_pressed(self.keys.up):
             inc += vec2(speed, 0)
-        if key_state[pg.K_s]:
+        if self.keys.is_pressed(self.keys.down):
             inc += vec2(-speed, 0)
 
         if inc.x and inc.y:

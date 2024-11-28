@@ -58,7 +58,7 @@ class WADData:
 
         self.update_data()
         # ------------------------------- #
-        self.asset_data = AssetData(self)
+        self.asset_data = AssetData(self, engine.graphics)
         # ------------------------------- #
         self.reader.close()
 

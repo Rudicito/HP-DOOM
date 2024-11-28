@@ -9,7 +9,7 @@ class SegHandler:
         self.engine = engine
         self.wad_data = engine.wad_data
         self.player = engine.player
-        self.framebuffer = self.engine.framebuffer
+        self.framebuffer = self.engine.graphics("framebuffer")
         self.textures = self.wad_data.asset_data.textures
         self.sky_id = self.wad_data.asset_data.sky_id
         #

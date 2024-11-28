@@ -1,5 +1,3 @@
-import pygame as pg
-import pygame.gfxdraw as gfx
 from settings import *
 import random
 

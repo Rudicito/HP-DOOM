@@ -1,5 +1,5 @@
 import math
-from pygame.math import Vector2 as vec2
+from vector2 import Vector2 as vec2
 
 DOOM_RES = DOOM_W, DOOM_H = 320, 200
 

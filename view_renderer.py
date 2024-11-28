@@ -1,8 +1,6 @@
 from settings import *
 import random
 from random import randrange as rnd
-import pygame.gfxdraw as gfx
-import pygame as pg
 from numba import njit
 
 
@@ -27,7 +25,7 @@ class ViewRenderer:
     def draw_sprite(self):
         img = self.sprites['SHTGA0']
         pos = (H_WIDTH - img.get_width() // 2, HEIGHT - img.get_height())
-        self.screen.blit(img, pos)
+        self.framebuffer.blit_texture(img, pos)
 
     def draw_palette(self):
         pal, size = self.palette, 10
@@ -95,20 +93,13 @@ class ViewRenderer:
             tx = int(left_x + dx * x) & 63
             ty = int(left_y + dy * x) & 63
 
-            col = flat_tex[tx, ty]
-            col = col[0] * light_level, col[1] * light_level, col[2] * light_level
-            screen[x, iy] = col
+            screen.blit_pixel(flat_tex, [x, iy], [tx, ty])
 
     @staticmethod
     @njit(fastmath=True)
     def draw_wall_col(framebuffer, tex, tex_col, x, y1, y2, tex_alt, inv_scale, light_level):
         if y1 < y2:
-            tex_w, tex_h = len(tex), len(tex[0])
-            tex_col = int(tex_col) % tex_w
-            tex_y = tex_alt + (float(y1) - H_HEIGHT) * inv_scale
-
-            for iy in range(y1, y2 + 1):
-                col = tex[tex_col, int(tex_y) % tex_h]
-                col = col[0] * light_level, col[1] * light_level, col[2] * light_level
-                framebuffer[x, iy] = col
-                tex_y += inv_scale
+            tex_col = int(tex_col) % tex.width
+            tex_y1 = tex_alt + (float(y1) - H_HEIGHT) * inv_scale
+            tex_y2 = tex_y1 + int(inv_scale * (abs(y2 - y1)))
+            framebuffer.blit_column(tex, x, y1, y2, tex_col, tex_y1, tex_y2, inv_scale)

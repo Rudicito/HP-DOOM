@@ -1,10 +1,9 @@
 from settings import *
 from data_types import PatchHeader
-import pygame as pg
-
 
 class Patch:
-    def __init__(self, asset_data, name, is_sprite=True):
+    def __init__(self, asset_data, name, graphic,  is_sprite=True):
+        self.graphic = graphic
         self.asset_data = asset_data
         self.name = name
         #
@@ -14,10 +13,10 @@ class Patch:
         self.height = self.header.height
         #
         self.image = self.get_image()
-        if is_sprite:
-            self.image = pg.transform.scale(self.image, (
-                self.width * SCALE, self.height * SCALE)
-                )
+        # if is_sprite:
+        #     self.image = pg.transform.scale(self.image, (
+        #         self.width * SCALE, self.height * SCALE)
+        #         )
 
     def load_patch_columns(self, patch_name):
         reader = self.asset_data.reader
@@ -37,9 +36,7 @@ class Patch:
         return patch_header, patch_columns
 
     def get_image(self):
-        image = pg.Surface([self.width, self.height])
-        image.fill(COLOR_KEY)
-        image.set_colorkey(COLOR_KEY)
+        image = self.graphic.create([self.width, self.height])
 
         ix = 0
         for column in self.patch_columns:
@@ -50,58 +47,61 @@ class Patch:
             for iy in range(column.length):
                 color_idx = column.data[iy]
                 color = self.palette[color_idx]
-                image.set_at([ix, iy + column.top_delta], color)
+                image.draw_pixel([ix, iy + column.top_delta], color)
 
         return image
 
 
 class Texture:
     def __init__(self, asset_data, tex_map):
+        self.graphic = asset_data.graphics("map_text")
         self.asset_data = asset_data
         self.tex_map = tex_map
         self.image = self.get_image()
 
     def get_image(self):
-        image = pg.Surface([self.tex_map.width, self.tex_map.height])
-        image.fill(COLOR_KEY)
-        image.set_colorkey(COLOR_KEY)
-        #
+        image = self.graphic.create([self.tex_map.width, self.tex_map.height])
+
         for patch_map in self.tex_map.patch_maps:
             patch = self.asset_data.texture_patches[patch_map.p_name_index]
             image.blit(patch.image, (patch_map.x_offset, patch_map.y_offset))
-        # --------------------------------- #
-        image = pg.surfarray.array3d(image)
-        # --------------------------------- #
+
         return image
 
 
 # ---------------------------------------------------- #
 class Flat:
     def __init__(self, asset_data, flat_data):
+        self.graphic = asset_data.graphics("fl_ce_text")
         self.flat_data = flat_data
         self.palette = asset_data.palette
         self.image = self.get_image()
 
     def get_image(self):
-        image = pg.Surface([64, 64])
+        image = self.graphic.create([64, 64])
+
         #
         for i, color_idx in enumerate(self.flat_data):
             ix = i % 64
             iy = i // 64
             color = self.palette[color_idx]
-            image.set_at([ix, iy], color)
-        # --------------------------------- #
-        image = pg.surfarray.array3d(image)
-        # --------------------------------- #
+            image.draw_pixel([ix, iy], color)
+
         return image
 # --------------------------------------------------- #
 
 
 class AssetData:
-    def __init__(self, wad_data):
+    def __init__(self, wad_data, graphics):
         self.wad_data = wad_data
         self.reader = wad_data.reader
+        self.graphics = graphics
         self.get_lump_index = wad_data.get_lump_index
+
+        graphics("map_text").init_graphic()
+        graphics("fl_ce_text").init_graphic()
+        graphics("patch_text").init_graphic()
+        graphics("sprite_text").init_graphic()
 
         # palettes
         self.palettes = self.wad_data.get_lump_data(
@@ -126,7 +126,7 @@ class AssetData:
 
         # texture patches
         self.texture_patches = [
-            Patch(self, p_name, is_sprite=False) for p_name in self.p_names
+            Patch(self, p_name, graphics('patch_text'), is_sprite=False) for p_name in self.p_names
         ]
 
         # wall textures
@@ -146,6 +146,9 @@ class AssetData:
         self.sky_tex_name = 'SKY1'
         self.sky_tex = self.textures[self.sky_tex_name]
         # --------------------------------------------------------------------------- #
+
+        for key, texture in self.textures.items():
+            texture.duplicate(1)
 
     def get_flats(self, start_marker='F_START', end_marker='F_END'):
         idx1 = self.get_lump_index(start_marker) + 1
@@ -185,6 +188,6 @@ class AssetData:
         idx2 = self.get_lump_index(end_marker)
         lumps_info = self.reader.directory[idx1: idx2]
         sprites = {
-            lump['lump_name']: Patch(self, lump['lump_name']).image for lump in lumps_info
+            lump['lump_name']: Patch(self, lump['lump_name'], self.graphics('sprite_text')).image for lump in lumps_info
         }
         return sprites
