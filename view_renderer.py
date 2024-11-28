@@ -49,7 +49,6 @@ class ViewRenderer:
             self.draw_column(self.framebuffer, x, y1, y2, color)
 
     @staticmethod
-    @njit
     def draw_column(framebuffer, x, y1, y2, color):
         for iy in range(y1, y2 + 1):
             framebuffer[x, iy] = color
@@ -69,7 +68,6 @@ class ViewRenderer:
                                    self.player.angle, self.player.pos.x, self.player.pos.y)
 
     @staticmethod
-    @njit(fastmath=True)
     def draw_flat_col(screen, flat_tex, x, y1, y2, light_level, world_z,
                       player_angle, player_x, player_y):
         player_dir_x = math.cos(math.radians(player_angle))
@@ -95,7 +93,6 @@ class ViewRenderer:
             screen.blit_pixel(flat_tex, [x, iy], [tx, ty])
 
     @staticmethod
-    @njit(fastmath=True)
     def draw_wall_col(framebuffer, tex, tex_col, x, y1, y2, tex_alt, inv_scale, light_level):
         if y1 < y2:
             tex_col = int(tex_col) % tex.width
