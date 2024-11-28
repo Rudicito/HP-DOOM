@@ -1,7 +1,5 @@
 from wad_data import WADData
 from settings import *
-import pygame as pg
-import sys
 from map_renderer import MapRenderer
 from player import Player
 from bsp import BSP
@@ -27,7 +25,7 @@ class DoomEngine:
         self.framebuffer.init_graphic()
         self.keys = Keys()
         self.wad_data = WADData(self, map_name='E1M1')
-        self.map_renderer = MapRenderer(self)
+        #self.map_renderer = MapRenderer(self)
         self.player = Player(self)
         self.bsp = BSP(self)
         self.seg_handler = SegHandler(self)
