@@ -1,5 +1,5 @@
 from settings import *
-import random
+import urandom as random
 
 
 class MapRenderer:

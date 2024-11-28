@@ -1,7 +1,6 @@
 from settings import *
-import random
-from random import randrange as rnd
-from numba import njit
+import urandom as random
+from urandom import randrange as rnd
 
 
 class ViewRenderer:

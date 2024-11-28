@@ -1,4 +1,4 @@
-import struct
+import ustruct as struct
 from vector2 import Vector2 as vec2
 from data_types import *
 
