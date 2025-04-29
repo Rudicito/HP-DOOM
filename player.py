@@ -7,7 +7,7 @@ class Player:
         self.engine = engine
         self.keys = self.engine.keys
         # Player 1 start thing has a type equal to 1
-        self.thing = next((thing for thing in engine.wad_data.things if thing.type == 1), None)
+        self.thing = next((thing for thing in engine.wad_data.things if thing.type == 1))
         self.pos = self.thing.pos
         self.angle = self.thing.angle
         self.DIAG_MOVE_CORR = 1 / math.sqrt(2)
