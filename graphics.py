@@ -2,7 +2,7 @@ import sys
 from settings import *
 
 if sys.platform == "HP Prime":
-    from hpprime import pixon, dimgrob, eval, fillrect, rect, textout, strblit2
+    from hpprime import pixon, dimgrob, eval, fillrect, rect, textout, strblit2, line
 
     # FOR DEBUG
 
@@ -13,18 +13,24 @@ if sys.platform == "HP Prime":
 else:
     def pixon(*args):
         pass
+    
     def dimgrob(*args):
         pass
 
+    def fillrect(*args):
+        pass
+    def rect(*args):
+        pass
+    
+    def textout(*args):
+        pass
 
     def strblit2(graphic, x, y, width, height, graphic2, sx, sy, swidth, sheight):
         print(
             "strblit2 called: \nx={}, y={}, width={}, height={} \nx={}, y={}, width={}, height={}\n".format(
                 x, y, width, height, sx, sy, swidth, sheight))
-
-    def fillrect(*args):
-        pass
-    def rect(*args):
+    
+    def line(*args):
         pass
 
 
@@ -200,6 +206,8 @@ class Graphic: # The graphics variable, G1, G2 for example on hp prime
             strblit2(self.graphic_var, x, y1, 1, segment_g,
                      texture.graphic_var, texture.offset+text_x, 0, 1, segment_t)
 
+    def line(self, color, x1, y1, x2, y2):
+        line(self.graphic_var, x1, y1, x2, y2, rgba(color))
 
     # FOR DEBUG
     # def blit_column(self, texture, x, y1, y2, text_x, text_y1, text_y2, scale, color):

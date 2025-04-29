@@ -1,6 +1,13 @@
 import umath as math
 from vector2 import Vector2 as vec2
 
+# Render floor and ceiling?
+# Very bad performance compared to walls
+RENDER_FLATS = True
+
+# Render walls?
+RENDER_WALLS = True
+
 DOOM_RES = DOOM_W, DOOM_H = 320, 200
 
 SCALE = 1

@@ -70,6 +70,10 @@ class ViewRenderer:
     @staticmethod
     def draw_flat_col(screen, flat_tex, x, y1, y2, light_level, world_z,
                       player_angle, player_x, player_y):
+        if not RENDER_FLATS:
+            screen.line([0,0,0], x, y1, x, y2)
+            return
+        
         player_dir_x = math.cos(math.radians(player_angle))
         player_dir_y = math.sin(math.radians(player_angle))
 
@@ -94,6 +98,10 @@ class ViewRenderer:
 
     @staticmethod
     def draw_wall_col(framebuffer, tex, tex_col, x, y1, y2, tex_alt, inv_scale, light_level):
+        if not RENDER_WALLS:
+            framebuffer.line([0,0,0], x, y1, x, y2)
+            return
+        
         if y1 < y2:
             tex_col = int(tex_col) % tex.width
             tex_y1 = tex_alt + (float(y1) - H_HEIGHT) * inv_scale
