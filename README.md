@@ -1,7 +1,7 @@
 Base of [StanislavPetrovV/DOOM-Level-Viewer](https://github.com/StanislavPetrovV/DOOM-Level-Viewer)
 
 HP-DOOM is written in Python using HP Prime libraries. Tested with WAD files for DOOM1 and DOOM2
-![doom](/sreenshots/0.png)
+![doom](/screenshots/0.png)
 
 ## Documentation used
 - [Youtube playlist "Recreating DOOM" by Coder Space (StanislavPetrovV)](https://youtube.com/playlist?list=PLi77irUVkDasNAYQPr3N8nVcJLQAlANva)
