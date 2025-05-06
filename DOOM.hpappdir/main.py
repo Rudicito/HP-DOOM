@@ -8,6 +8,7 @@ from view_renderer import ViewRenderer
 from graphics import *
 from clock import Clock
 from keys import Keys
+from gc import mem_alloc, mem_free
 
 
 class DoomEngine:
@@ -62,7 +63,10 @@ class DoomEngine:
 
 
 try:
+    print("Loading...")
     doom = DoomEngine()
+    print("Memory used :" + str(int(mem_alloc()) / 10e3) + "KB")
+    print("Memory left :" + str(int(mem_free()) / 10e3) + "KB")
     doom.run()
 except KeyboardInterrupt:
     pass

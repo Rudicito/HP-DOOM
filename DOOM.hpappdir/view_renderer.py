@@ -8,7 +8,8 @@ class ViewRenderer:
         self.engine = engine
         self.asset_data = engine.wad_data.asset_data
         self.palette = self.asset_data.palette
-        self.sprites = self.asset_data.sprites
+        if LOAD_SPRITES:
+            self.sprites = self.asset_data.sprites
         self.textures = self.asset_data.textures
         self.player = engine.player
         self.screen = engine.screen
@@ -22,9 +23,10 @@ class ViewRenderer:
         self.sky_tex_alt = 100
 
     def draw_sprite(self):
-        img = self.sprites['SHTGA0']
-        pos = (H_WIDTH - img.get_width() // 2, HEIGHT - img.get_height())
-        self.framebuffer.blit_texture(img, pos)
+        if LOAD_SPRITES:
+            img = self.sprites['SHTGA0']
+            pos = (H_WIDTH - img.get_width() // 2, HEIGHT - img.get_height())
+            self.framebuffer.blit_texture(img, pos)
 
     # def draw_palette(self):
     #     pal, size = self.palette, 10

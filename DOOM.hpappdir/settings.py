@@ -8,6 +8,11 @@ RENDER_FLATS = True
 # Render walls?
 RENDER_WALLS = True
 
+# Load sprites?
+# Reduce load time, reduce RAM usage
+# Sprites are only used to display the shotgun
+LOAD_SPRITES = True
+
 DOOM_RES = DOOM_W, DOOM_H = 320, 200
 
 SCALE = 1

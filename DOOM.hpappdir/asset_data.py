@@ -114,7 +114,9 @@ class AssetData:
         self.palette = self.palettes[self.palette_idx]
 
         # sprites
-        self.sprites = self.get_sprites(start_marker='S_START', end_marker='S_END')
+        if LOAD_SPRITES:
+            self.sprites = self.get_sprites(start_marker='S_START', end_marker='S_END')
+            print("Sprite loaded!")
 
         # texture patch names
         self.p_names = self.wad_data.get_lump_data(
@@ -128,6 +130,7 @@ class AssetData:
         self.texture_patches = [
             Patch(self, p_name, graphics('patch_text'), is_sprite=False) for p_name in self.p_names
         ]
+        print("Texture patches loaded!")
 
         # wall textures
         texture_maps = self.load_texture_maps(texture_lump_name='TEXTURE1')
@@ -137,8 +140,11 @@ class AssetData:
         self.textures = {
             tex_map.name: Texture(self, tex_map).image for tex_map in texture_maps
         }
+        print("Wall textures loaded!")
+        
         # flat textures
         self.textures.update(self.get_flats())
+        print("Flats textures loaded!")
 
         # --------------------------------------------------------------------------- #
         # sky
