@@ -55,3 +55,12 @@ class Player:
 
         inc.rotate_ip(self.angle)
         self.pos += inc
+        
+        # Change screen size
+        if self.keys.just_pressed(self.keys.plus):
+            s.set_screen_size(s.SCREEN_SIZE + 1)
+            self.engine.init_draws()
+        
+        if self.keys.just_pressed(self.keys.minus):
+            s.set_screen_size(s.SCREEN_SIZE - 1)
+            self.engine.init_draws()

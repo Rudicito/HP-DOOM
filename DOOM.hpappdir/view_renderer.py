@@ -19,13 +19,13 @@ class ViewRenderer:
         # sky settings
         self.sky_id = self.asset_data.sky_id
         self.sky_tex = self.asset_data.sky_tex
-        self.sky_inv_scale = 160 / HEIGHT
+        self.sky_inv_scale = 160 / s.HEIGHT
         self.sky_tex_alt = 100
 
     def draw_sprite(self):
         if LOAD_SPRITES:
             img = self.sprites['SHTGA0']
-            pos = (H_WIDTH - img.get_width() // 2, HEIGHT - img.get_height())
+            pos = (s.H_WIDTH - img.get_width() // 2, s.HEIGHT - img.get_height())
             self.framebuffer.blit_texture(img, pos)
 
     # def draw_palette(self):
@@ -80,7 +80,7 @@ class ViewRenderer:
         player_dir_y = math.sin(math.radians(player_angle))
 
         for iy in range(y1, y2 + 1):
-            z = H_WIDTH * world_z / (H_HEIGHT - iy)
+            z = s.H_WIDTH * world_z / (s.H_HEIGHT - iy)
 
             px = player_dir_x * z + player_x
             py = player_dir_y * z + player_y
@@ -90,8 +90,8 @@ class ViewRenderer:
             right_x = player_dir_y * z + px
             right_y = -player_dir_x * z + py
 
-            dx = (right_x - left_x) / WIDTH
-            dy = (right_y - left_y) / WIDTH
+            dx = (right_x - left_x) / s.WIDTH
+            dy = (right_y - left_y) / s.WIDTH
 
             tx = int(left_x + dx * x) & 63
             ty = int(left_y + dy * x) & 63
@@ -106,6 +106,6 @@ class ViewRenderer:
         
         if y1 < y2:
             tex_col = int(tex_col) % tex.width
-            tex_y1 = tex_alt + (float(y1) - H_HEIGHT) * inv_scale
+            tex_y1 = tex_alt + (float(y1) - s.H_HEIGHT) * inv_scale
             tex_y2 = tex_y1 + int(inv_scale * (abs(y2 - y1)))
             framebuffer.blit_column(tex, x, y1, y2, tex_col, tex_y1, tex_y2, inv_scale)

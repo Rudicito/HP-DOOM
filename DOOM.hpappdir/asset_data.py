@@ -1,5 +1,6 @@
 from settings import *
 from data_types import PatchHeader
+from show_mem import *
 
 class Patch:
     def __init__(self, asset_data, name, graphic,  is_sprite=True):
@@ -117,6 +118,7 @@ class AssetData:
         if LOAD_SPRITES:
             self.sprites = self.get_sprites(start_marker='S_START', end_marker='S_END')
             print("Sprite loaded!")
+            # show_mem("sprites")
 
         # texture patch names
         self.p_names = self.wad_data.get_lump_data(
@@ -131,6 +133,7 @@ class AssetData:
             Patch(self, p_name, graphics('patch_text'), is_sprite=False) for p_name in self.p_names
         ]
         print("Texture patches loaded!")
+        # show_mem("texture patches")
 
         # wall textures
         texture_maps = self.load_texture_maps(texture_lump_name='TEXTURE1')
@@ -141,10 +144,12 @@ class AssetData:
             tex_map.name: Texture(self, tex_map).image for tex_map in texture_maps
         }
         print("Wall textures loaded!")
+        # show_mem("wall textures")
         
         # flat textures
         self.textures.update(self.get_flats())
         print("Flats textures loaded!")
+        # show_mem("flats textures")
 
         # --------------------------------------------------------------------------- #
         # sky

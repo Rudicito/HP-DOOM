@@ -89,12 +89,12 @@ class Graphics:
     def __init__(self):
         self.graphics = {
             "screen": Graphic(0, 320, 240),
-            "framebuffer": Graphic(1, DOOM_W, DOOM_H),
+            "framebuffer": Graphic(1, s.DOOM_W, s.DOOM_H),
             "map_text": Graphic(2, 50000, 400), # 128
             "fl_ce_text": Graphic(3, 50000, 200), # 64
             "patch_text": Graphic(4, 50000, 200), #64
             "sprite_text": Graphic(5, 50000, 200), # 200
-            "light" : Graphic(6, 256, DOOM_H),
+            "light" : Graphic(6, 256, s.DOOM_H),
         }
 
     def __call__(self, name):

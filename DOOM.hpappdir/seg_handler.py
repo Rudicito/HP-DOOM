@@ -24,20 +24,20 @@ class SegHandler:
         self.init_screen_range()
 
     def init_floor_ceil_clip_height(self):
-        self.upper_clip = [-1 for _ in range(WIDTH)]
-        self.lower_clip = [HEIGHT for _ in range(WIDTH)]
+        self.upper_clip = [-1 for _ in range(s.WIDTH)]
+        self.lower_clip = [s.HEIGHT for _ in range(s.WIDTH)]
 
     @staticmethod
     def get_x_to_angle_table():
         x_to_angle = []
-        for i in range(0, WIDTH + 1):
-            angle = math.degrees(math.atan((H_WIDTH - i) / SCREEN_DIST))
+        for i in range(0, s.WIDTH + 1):
+            angle = math.degrees(math.atan((s.H_WIDTH - i) / s.SCREEN_DIST))
             x_to_angle.append(angle)
         return x_to_angle
 
     def scale_from_global_angle(self, x, rw_normal_angle, rw_distance):
         x_angle = self.x_to_angle[x]
-        num = SCREEN_DIST * math.cos(math.radians(rw_normal_angle - x_angle - self.player.angle))
+        num = s.SCREEN_DIST * math.cos(math.radians(rw_normal_angle - x_angle - self.player.angle))
         den = rw_distance * math.cos(math.radians(x_angle))
 
         scale = num / den
@@ -45,7 +45,7 @@ class SegHandler:
         return scale
 
     def init_screen_range(self):
-        self.screen_range = set(range(WIDTH))
+        self.screen_range = set(range(s.WIDTH))
 
     def draw_solid_wall_range(self, x1, x2):
         # some aliases to shorten the following code
@@ -110,10 +110,10 @@ class SegHandler:
         # -------------------------------------------------------------------------- #
 
         # determine where on the screen the wall is drawn
-        wall_y1 = H_HEIGHT - world_front_z1 * rw_scale1
+        wall_y1 = s.H_HEIGHT - world_front_z1 * rw_scale1
         wall_y1_step = -rw_scale_step * world_front_z1
 
-        wall_y2 = H_HEIGHT - world_front_z2 * rw_scale1
+        wall_y2 = s.H_HEIGHT - world_front_z2 * rw_scale1
         wall_y2_step = -rw_scale_step * world_front_z2
 
         # now the rendering is carried out
@@ -243,15 +243,15 @@ class SegHandler:
             rw_center_angle = rw_normal_angle - self.player.angle
 
         # the y positions of the top / bottom edges of the wall on the screen
-        wall_y1 = H_HEIGHT - world_front_z1 * rw_scale1
+        wall_y1 = s.H_HEIGHT - world_front_z1 * rw_scale1
         wall_y1_step = -rw_scale_step * world_front_z1
-        wall_y2 = H_HEIGHT - world_front_z2 * rw_scale1
+        wall_y2 = s.H_HEIGHT - world_front_z2 * rw_scale1
         wall_y2_step = -rw_scale_step * world_front_z2
 
         # the y position of the top edge of the portal
         if b_draw_upper_wall:
             if world_back_z1 > world_front_z2:
-                portal_y1 = H_HEIGHT - world_back_z1 * rw_scale1
+                portal_y1 = s.H_HEIGHT - world_back_z1 * rw_scale1
                 portal_y1_step = -rw_scale_step * world_back_z1
             else:
                 portal_y1 = wall_y2
@@ -259,7 +259,7 @@ class SegHandler:
 
         if b_draw_lower_wall:
             if world_back_z2 < world_front_z1:
-                portal_y2 = H_HEIGHT - world_back_z2 * rw_scale1
+                portal_y2 = s.H_HEIGHT - world_back_z2 * rw_scale1
                 portal_y2_step = -rw_scale_step * world_back_z2
             else:
                 portal_y2 = wall_y1

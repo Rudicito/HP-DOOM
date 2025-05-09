@@ -1,6 +1,5 @@
 from wad_data import WADData
 from settings import *
-from map_renderer import MapRenderer
 from player import Player
 from bsp import BSP
 from seg_handler import SegHandler
@@ -8,7 +7,7 @@ from view_renderer import ViewRenderer
 from graphics import *
 from clock import Clock
 from keys import Keys
-from gc import mem_alloc, mem_free
+from show_mem import *
 
 
 class DoomEngine:
@@ -28,6 +27,10 @@ class DoomEngine:
         self.wad_data = WADData(self, map_name='E1M1')
         #self.map_renderer = MapRenderer(self)
         self.player = Player(self)
+        self.init_draws()
+        
+    def init_draws(self):
+        self.framebuffer.init_graphic(s.WIDTH, s.HEIGHT)
         self.bsp = BSP(self)
         self.seg_handler = SegHandler(self)
         self.view_renderer = ViewRenderer(self)
@@ -46,6 +49,7 @@ class DoomEngine:
         except ZeroDivisionError:
             fps = 1000
         self.screen.draw_string("{:.1f} fps".format(fps)) # print fps with 1 digit
+        # self.screen.draw_string(str(screen_size))
         # pg.display.flip()
 
     # def check_events(self):
@@ -65,8 +69,8 @@ class DoomEngine:
 try:
     print("Loading...")
     doom = DoomEngine()
-    print("Memory used :" + str(int(mem_alloc()) / 10e3) + "KB")
-    print("Memory left :" + str(int(mem_free()) / 10e3) + "KB")
+    print("Loading finished!")
+    show_mem()
     doom.run()
 except KeyboardInterrupt:
     pass

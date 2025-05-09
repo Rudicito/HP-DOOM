@@ -7,6 +7,8 @@ class Keys:
         self.right = 8
         self.up = 2
         self.down = 12
+        self.plus = 50
+        self.minus = 45
 
     def just_pressed(self, key):
         if self.old_keyboard_input & (1 << key) == False and self.keyboard_input & (1 << key) != False:
