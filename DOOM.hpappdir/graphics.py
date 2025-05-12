@@ -135,6 +135,14 @@ class Graphic: # The graphics variable, G1, G2 for example on hp prime
 
     def blit_stretch(self, graph):
         strblit2(self.graphic_var, 0, 0, self.width, self.height, graph.graphic_var, 0, 0, graph.width, graph.height)
+        
+    def blit_not_stretch(self, graph, x_y, w_h):
+        strblit2(self.graphic_var, x_y[0], x_y[1], w_h[0], w_h[1], graph.graphic_var, 0, 0, graph.width, graph.height)
+        
+    def blit_color(self, x_y, x_h, color=rgba([0,0,0])):
+        fillrect(self.graphic_var, x_y[0], x_y[1], x_h[0], x_h[1], color, color)
+        
+
 
     def blit_texture(self, texture, x_y=None):
         if x_y is None:

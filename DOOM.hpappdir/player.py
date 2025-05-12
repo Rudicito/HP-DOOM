@@ -55,3 +55,27 @@ class Player:
 
         inc.rotate_ip(self.angle)
         self.pos += inc
+        
+        # Change screen size
+        if self.keys.just_pressed(self.keys.plus):
+            s.set_screen_scale(s.SCALE + 0.1)
+            self.engine.init_draws()
+        
+        if self.keys.just_pressed(self.keys.minus):
+            s.set_screen_scale(s.SCALE - 0.1)
+            self.engine.init_draws()
+            
+            
+        # Change stretch
+        if self.keys.just_pressed(self.keys.enter):
+            s.STRETCH = not s.STRETCH
+            self.engine.init_draws()
+            
+        # Render FLATS WALLS
+        if self.keys.just_pressed(self.keys.one):
+            s.RENDER_WALLS = not s.RENDER_WALLS
+            self.engine.init_draws()
+
+        if self.keys.just_pressed(self.keys.two):
+            s.RENDER_FLATS = not s.RENDER_FLATS
+            self.engine.init_draws()

@@ -1,6 +1,5 @@
 from wad_data import WADData
 from settings import *
-from map_renderer import MapRenderer
 from player import Player
 from bsp import BSP
 from seg_handler import SegHandler
@@ -28,6 +27,11 @@ class DoomEngine:
         self.wad_data = WADData(self, map_name='E1M1')
         #self.map_renderer = MapRenderer(self)
         self.player = Player(self)
+        self.init_draws()
+        
+    def init_draws(self):
+        self.screen.init_graphic()
+        self.framebuffer.init_graphic(s.WIDTH, s.HEIGHT)
         self.bsp = BSP(self)
         self.seg_handler = SegHandler(self)
         self.view_renderer = ViewRenderer(self)
@@ -40,13 +44,18 @@ class DoomEngine:
 
     def draw(self):
         self.view_renderer.draw_sprite()
-        self.screen.blit_stretch(self.framebuffer)
+        if s.STRETCH:
+            self.screen.blit_stretch(self.framebuffer)
+        else:
+            # For refresh the screen when not stretch
+            self.screen.blit_color((0,0), (319, 17))
+            self.screen.blit_not_stretch(self.framebuffer, (s.ORIGIN_X_NOT_STRETCHED, s.ORIGIN_Y_NOT_STRETCHED), (s.WIDTH, s.HEIGHT_STRETCH))
         try:
             fps = 1000/self.clock.dt
         except ZeroDivisionError:
             fps = 1000
         self.screen.draw_string("{:.1f} fps".format(fps)) # print fps with 1 digit
-        # pg.display.flip()
+        self.screen.draw_string("Scale = {:.1f}".format(s.SCALE), 263)
 
     # def check_events(self):
     #     for e in pg.event.get():

@@ -36,9 +36,9 @@ class BSP:
     @staticmethod
     def angle_to_x(angle):
         if angle > 0:
-            x = SCREEN_DIST - math.tan(math.radians(angle)) * H_WIDTH
+            x = s.SCREEN_DIST - math.tan(math.radians(angle)) * s.H_WIDTH
         else:
-            x = -math.tan(math.radians(angle)) * H_WIDTH + SCREEN_DIST
+            x = -math.tan(math.radians(angle)) * s.H_WIDTH + s.SCREEN_DIST
         return int(x)
 
     def add_segment_to_fov(self, vertex1, vertex2):
@@ -56,19 +56,19 @@ class BSP:
         angle1 -= self.player.angle
         angle2 -= self.player.angle
 
-        span1 = self.norm(angle1 + H_FOV)
-        if span1 > FOV:
-            if span1 >= span + FOV:
+        span1 = self.norm(angle1 + s.H_FOV)
+        if span1 > s.FOV:
+            if span1 >= span + s.FOV:
                 return False
             # clipping
-            angle1 = H_FOV
+            angle1 = s.H_FOV
 
-        span2 = self.norm(H_FOV - angle2)
-        if span2 > FOV:
-            if span2 >= span + FOV:
+        span2 = self.norm(s.H_FOV - angle2)
+        if span2 > s.FOV:
+            if span2 >= span + s.FOV:
                 return False
             # clipping
-            angle2 = -H_FOV
+            angle2 = -s.H_FOV
 
         x1 = self.angle_to_x(angle1)
         x2 = self.angle_to_x(angle2)
@@ -121,9 +121,9 @@ class BSP:
             span = self.norm(angle1 - angle2)
 
             angle1 -= self.player.angle
-            span1 = self.norm(angle1 + H_FOV)
-            if span1 > FOV:
-                if span1 >= span + FOV:
+            span1 = self.norm(angle1 + s.H_FOV)
+            if span1 > s.FOV:
+                if span1 >= span + s.FOV:
                     continue
             return True
         return False
