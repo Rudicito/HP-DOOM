@@ -3,6 +3,9 @@ from vector2 import Vector2 as vec2
 
 ##########################################
 
+# The map to spawn in
+MAP = 'E1M1'
+
 # Render floor and ceiling?
 # Very bad performance compared to walls
 RENDER_FLATS = True

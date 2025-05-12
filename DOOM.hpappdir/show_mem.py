@@ -6,4 +6,4 @@ def show_mem(message=False):
     total = used + free
     if message:
         print(message)
-    print("Memory used :" + str(used) + " KB (" + str(total / used) + "%)\n")
+    print("Memory used :" + str(used) + " B (" + "{:.1f}%)\n".format(total / used))

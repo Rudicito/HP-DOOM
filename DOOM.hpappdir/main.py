@@ -24,7 +24,7 @@ class DoomEngine:
         self.framebuffer = self.graphics("framebuffer")
         self.framebuffer.init_graphic()
         self.keys = Keys()
-        self.wad_data = WADData(self, map_name='E1M1')
+        self.wad_data = WADData(self, MAP)
         #self.map_renderer = MapRenderer(self)
         self.player = Player(self)
         self.init_draws()
@@ -47,7 +47,7 @@ class DoomEngine:
         if s.STRETCH:
             self.screen.blit_stretch(self.framebuffer)
         else:
-            # For refresh the screen when not stretch
+            # For refresh the screen when not stretch, only for the fps, stretch display
             self.screen.blit_color((0,0), (319, 17))
             self.screen.blit_not_stretch(self.framebuffer, (s.ORIGIN_X_NOT_STRETCHED, s.ORIGIN_Y_NOT_STRETCHED), (s.WIDTH, s.HEIGHT_STRETCH))
         try:
