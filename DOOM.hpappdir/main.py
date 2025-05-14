@@ -48,14 +48,14 @@ class DoomEngine:
             self.screen.blit_stretch(self.framebuffer)
         else:
             # For refresh the screen when not stretch, only for the fps, stretch display
-            self.screen.blit_color((0,0), (319, 17))
+            self.screen.blit_color((0,0), (76, 40))
             self.screen.blit_not_stretch(self.framebuffer, (s.ORIGIN_X_NOT_STRETCHED, s.ORIGIN_Y_NOT_STRETCHED), (s.WIDTH, s.HEIGHT_STRETCH))
         try:
             fps = 1000/self.clock.dt
         except ZeroDivisionError:
             fps = 1000
-        self.screen.draw_string("{:.1f} fps".format(fps)) # print fps with 1 digit
-        self.screen.draw_string("Scale = {:.1f}".format(s.SCALE), 263)
+        self.screen.draw_string("Scale = {:.1f}".format(s.SCALE))
+        self.screen.draw_string("{:.1f} fps".format(fps), 0, 20) # print fps with 1 digit
 
     # def check_events(self):
     #     for e in pg.event.get():
