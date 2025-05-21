@@ -45,10 +45,11 @@ class DoomEngine:
     def draw(self):
         self.view_renderer.draw_sprite()
         if s.STRETCH:
+            # Blit the framebuffer at 320x200 to the display at 320x240
+            # because DOOM run at 300x200 but display at 320x240: https://doomwiki.org/wiki/Aspect_ratio
             self.screen.blit_stretch(self.framebuffer)
         else:
-            # For refresh the screen when not stretch, only for the fps, stretch display
-            self.screen.blit_color((0,0), (76, 40))
+            self.screen.blit_color((0,0), (76, 40)) # For refresh the screen when not stretch, only for the fps, HUD
             self.screen.blit_not_stretch(self.framebuffer, (s.ORIGIN_X_NOT_STRETCHED, s.ORIGIN_Y_NOT_STRETCHED), (s.WIDTH, s.HEIGHT_STRETCH))
         try:
             fps = 1000/self.clock.dt

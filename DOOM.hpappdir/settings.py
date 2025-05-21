@@ -81,6 +81,7 @@ class Settings:
         self.H_FOV = self.FOV / 2
         self.SCREEN_DIST = self.H_WIDTH / math.tan(math.radians(self.H_FOV))
 
+        # Because DOOM run at 300x200 but display at 320x240: https://doomwiki.org/wiki/Aspect_ratio
         self.HEIGHT_STRETCH = self.HEIGHT * (240/200)
         
         self.ORIGIN_X_NOT_STRETCHED = (SCREEN_W - self.WIDTH) // 2
