@@ -1,6 +1,7 @@
 import ustruct as struct
 from vector2 import Vector2 as vec2
 from data_types import *
+from graphics import rgba
 
 
 class WADReader:
@@ -98,7 +99,7 @@ class WADReader:
             r = read_1_byte(offset + i * 3 + 0)
             g = read_1_byte(offset + i * 3 + 1)
             b = read_1_byte(offset + i * 3 + 2)
-            palette.append((r, g, b),)
+            palette.append(rgba((r, g, b)))
         return palette
 
     def read_sector(self, offset):

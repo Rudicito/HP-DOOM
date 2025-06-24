@@ -246,12 +246,15 @@ class Graphic: # The graphics variable, G1, G2 for example on hp prime
         return self.get_pixel([x, y])
 
     def draw_pixel(self, x_y, color):
+        if isinstance(color, (list, tuple)):
+            color = rgba(color)
+
         x = x_y[0]
         y = x_y[1]
         if x < 0 or x >= self.width or y < 0 or y >= self.height:
             raise ValueError('Try to add pixel to a graphic outside his limits :', x, y, self.width, self.height)
         else:
-            pixon(self.graphic_var, x, y, rgba(color))
+            pixon(self.graphic_var, x, y, color)
 
     # SUPER SLOW
     def get_pixel(self, x_y):
@@ -260,7 +263,7 @@ class Graphic: # The graphics variable, G1, G2 for example on hp prime
         if x < 0 or x >= self.width or y < 0 or y >= self.height:
             raise ValueError('Try to get pixel to a graphic outside his limits :', x, y, self.width, self.height)
         else:
-            return int_to_rgba(int(eval("get_pixel(G" + str(self.graphic_var) + "," + str(x) + "," + str(y) + ")")))
+            return eval("GETPIX_P(G{},{},{})".format(self.graphic_var, x, y))
 
     def draw_string(self, string, x=0, y=0, color=rgba([255,255,255])):
         string = str(string)
@@ -283,12 +286,15 @@ class TextureArray:
         self.total_height = self.height
 
     def draw_pixel(self, x_y, color):
+        if isinstance(color, (list, tuple)):
+            color = rgba(color)
+            
         x = x_y[0]
         y = x_y[1]
         if x < 0 or x >= self.width or y < 0 or y >= self.height:
             raise ValueError('Try to add pixel to a texture outside his limits :', x, y, self.width, self.height)
         else:
-            pixon(self.graphic_var, x+self.offset, y, rgba(color))
+            pixon(self.graphic_var, x+self.offset, y, color)
 
     def get_pixel(self, x_y):
         x = x_y[0]
@@ -300,7 +306,7 @@ class TextureArray:
 
             return [255,0,0,255]
         else:
-            return int_to_rgba(int(eval("get_pixel(G" + str(self.graphic_var) + "," + str(x+self.offset) + "," + str(y) + ")")))
+            return eval("GETPIX_P(G{},{},{})".format(self.graphic_var, x+self.offset, y))
 
     def blit(self, t_arr, x_y):
 
