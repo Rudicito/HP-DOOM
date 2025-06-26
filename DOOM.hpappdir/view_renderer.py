@@ -10,7 +10,8 @@ class ViewRenderer:
         self.palette = self.asset_data.palette
         if LOAD_SPRITES:
             self.sprites = self.asset_data.sprites
-        self.textures = self.asset_data.textures
+        # self.wall_textures = self.asset_data.wall_textures
+        self.flat_textures = self.asset_data.flat_textures
         self.player = engine.player
         self.screen = engine.screen
         self.framebuffer = engine.framebuffer
@@ -63,7 +64,7 @@ class ViewRenderer:
                 self.draw_wall_col(self.framebuffer, self.sky_tex, tex_column, x, y1, y2,
                                    self.sky_tex_alt, self.sky_inv_scale, light_level=1.0)
             else:
-                flat_tex = self.textures[tex_id]
+                flat_tex = self.flat_textures[tex_id]
 
                 self.draw_flat_col(self.framebuffer, flat_tex,
                                    x, y1, y2, light_level, world_z,

@@ -10,7 +10,8 @@ class SegHandler:
         self.wad_data = engine.wad_data
         self.player = engine.player
         self.framebuffer = self.engine.graphics("framebuffer")
-        self.textures = self.wad_data.asset_data.textures
+        self.wall_textures = self.wad_data.asset_data.wall_textures
+        # self.flat_textures = self.wad_data.asset_data.flat_textures
         self.sky_id = self.wad_data.asset_data.sky_id
         #
         self.seg = None
@@ -94,7 +95,7 @@ class SegHandler:
 
         # -------------------------------------------------------------------------- #
         # determine how the wall texture are vertically aligned
-        wall_texture = self.textures[wall_texture_id]
+        wall_texture = self.wall_textures[wall_texture_id]
         if line.flags & self.wad_data.LINEDEF_FLAGS['DONT_PEG_BOTTOM']:
             v_top = front_sector.floor_height + wall_texture.shape[1]
             middle_tex_alt = v_top - self.player.height
@@ -216,7 +217,7 @@ class SegHandler:
 
         # determine how the wall textures are vertically aligned
         if b_draw_upper_wall:
-            upper_wall_texture = self.textures[side.upper_texture]
+            upper_wall_texture = self.wall_textures[side.upper_texture]
 
             if line.flags & self.wad_data.LINEDEF_FLAGS['DONT_PEG_TOP']:
                 upper_tex_alt = world_front_z1
@@ -226,7 +227,7 @@ class SegHandler:
             upper_tex_alt += side.y_offset
 
         if b_draw_lower_wall:
-            lower_wall_texture = self.textures[side.lower_texture]
+            lower_wall_texture = self.wall_textures[side.lower_texture]
 
             if line.flags & self.wad_data.LINEDEF_FLAGS['DONT_PEG_BOTTOM']:
                 lower_tex_alt = world_front_z1
