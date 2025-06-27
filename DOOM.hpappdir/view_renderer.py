@@ -1,6 +1,7 @@
 from settings import *
 import urandom as random
 from urandom import randrange as rnd
+from asset_data import get_anim_tex_list
 
 
 class ViewRenderer:
@@ -22,6 +23,9 @@ class ViewRenderer:
         self.sky_tex = self.asset_data.sky_tex
         self.sky_inv_scale = 160 / s.HEIGHT
         self.sky_tex_alt = 100
+        # animated textures
+        self.animated_flats = self.asset_data.animated_flats
+        self.clock = self.engine.clock
 
     def draw_sprite(self):
         if LOAD_SPRITES:
@@ -64,6 +68,11 @@ class ViewRenderer:
                 self.draw_wall_col(self.framebuffer, self.sky_tex, tex_column, x, y1, y2,
                                    self.sky_tex_alt, self.sky_inv_scale, light_level=1.0)
             else:
+                result = get_anim_tex_list(tex_id, self.animated_flats)
+                if result:
+                    anim_list, speed = result
+                    tex_id = anim_list[self.clock.cycles(speed/35*1000, len(anim_list))]
+                
                 flat_tex = self.flat_textures[tex_id]
 
                 self.draw_flat_col(self.framebuffer, flat_tex,

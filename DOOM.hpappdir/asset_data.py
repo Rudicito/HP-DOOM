@@ -92,6 +92,13 @@ class Flat:
 # --------------------------------------------------- #
 
 
+def get_anim_tex_list(texture_name, anim_tex_list):
+    for texture_list, speed in anim_tex_list:
+        if texture_name in texture_list:
+            return texture_list, speed
+    return None
+
+
 class AssetData:
     def __init__(self, wad_data, graphics):
         self.wad_data = wad_data
@@ -147,7 +154,7 @@ class AssetData:
         # show_mem("wall textures")
         
         # flat textures
-        self.flat_textures = self.get_flats()
+        ordered_flats, self.flat_textures = self.get_flats()
         print("Flats textures loaded!")
         # show_mem("flats textures")
 
@@ -160,12 +167,16 @@ class AssetData:
 
         for key, texture in self.wall_textures.items():
             texture.duplicate(1)
-
+            
+        # Animated flats
+        self.animated_flats = self.get_animated_texture(ordered_flats, self.animated_flat_ranges)
+        
     def get_flats(self, start_marker='F_START', end_marker='F_END'):
         idx1 = self.get_lump_index(start_marker) + 1
         idx2 = self.get_lump_index(end_marker)
         flat_lumps = self.reader.directory[idx1: idx2]
 
+        ordered_flats = []
         flats = {}
         for flat_lump in flat_lumps:
             offset = flat_lump['lump_offset']
@@ -176,8 +187,9 @@ class AssetData:
                 flat_data.append(self.reader.read_1_byte(offset + i, byte_format='B'))
 
             flat_name = flat_lump['lump_name']
+            ordered_flats.append(flat_name)
             flats[flat_name] = Flat(self, flat_data).image
-        return flats
+        return ordered_flats, flats
     # --------------------------------------------------------------------------- #
 
     def load_texture_maps(self, texture_lump_name):
@@ -202,3 +214,38 @@ class AssetData:
             lump['lump_name']: Patch(self, lump['lump_name'], self.graphics('sprite_text')).image for lump in lumps_info
         }
         return sprites
+
+    # animated walls and flats are hardcoded: 
+    # https://github.com/id-Software/DOOM/blob/a77dfb96cb91780ca334d0d4cfd86957558007e0/linuxdoom-1.10/p_spec.c#L101-L132
+
+    # structure: (endTexture, startTexture, speed)
+    animated_flat_ranges = (
+        # DOOM 1
+        ("NUKAGE3",	"NUKAGE1", 8),
+        ("FWATER4",	"FWATER1", 8),
+        ("SWATER4",	"SWATER1", 8),
+        ("LAVA4",	"LAVA1", 8),
+        ("BLOOD3",	"BLOOD1", 8),
+
+        # DOOM 2
+        ("RROCK08",	"RROCK05", 8),
+        ("SLIME04",	"SLIME01", 8),
+        ("SLIME08",	"SLIME05", 8),
+        ("SLIME12",	"SLIME09", 8),
+    )
+
+    def get_animated_texture(self, texture_names, animated_ranges):
+
+        animated_texture = []
+
+        for end_name, start_name, speed in animated_ranges:
+            try:
+                start_idx = texture_names.index(start_name)
+                end_idx = texture_names.index(end_name)
+                animated_texture.append(tuple((texture_names[start_idx:end_idx + 1], speed)))
+            except ValueError:
+                continue
+
+        return animated_texture
+
+    
