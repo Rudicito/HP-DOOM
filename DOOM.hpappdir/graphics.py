@@ -1,6 +1,10 @@
 import sys
 from settings import *
 
+WHITE_TRANSPARENT = 0xFFFFFFFF
+WHITE = 0xFFFFFF
+BLACK = 0x000000
+
 if sys.platform == "HP Prime":
     from hpprime import pixon, dimgrob, eval, fillrect, rect, textout, strblit2, line
 
@@ -111,7 +115,7 @@ class Graphic: # The graphics variable, G1, G2 for example on hp prime
     def init_graphic(self, width=None, height=None):
         if self.graphic_var == 0:
             # raise ValueError('G0 can not be re-dimensioned')
-            fillrect(0, 0, 0, 320, 240, rgba([0,0,0]), rgba([0,0,0]))
+            fillrect(0, 0, 0, 320, 240, BLACK, BLACK)
 
         if width is not None:
             self.width = width
@@ -121,7 +125,7 @@ class Graphic: # The graphics variable, G1, G2 for example on hp prime
         # The python version of dimgrob seems to have issue to initialize the graphics var, (issue to fill with transparency color)
         # Use the hpppl one instead
         # dimgrob(self.graphic_var, self.width, self.height, rgba([255,255,255,0]))
-        eval("DIMGROB_P(G"+ str(self.graphic_var)+ ", "+ str(self.width)+ ", "+ str(self.height)+ " ,"+ str(rgba([255,255,255,0]))+ ")")
+        eval("DIMGROB_P(G"+ str(self.graphic_var)+ ", "+ str(self.width)+ ", "+ str(self.height)+ " ,"+ str(WHITE_TRANSPARENT)+ ")")
 
     def blit(self, graph, x_y=None):
         if x_y is None:
@@ -139,7 +143,7 @@ class Graphic: # The graphics variable, G1, G2 for example on hp prime
     def blit_not_stretch(self, graph, x_y, w_h):
         strblit2(self.graphic_var, x_y[0], x_y[1], w_h[0], w_h[1], graph.graphic_var, 0, 0, graph.width, graph.height)
         
-    def blit_color(self, x_y, x_h, color=rgba([0,0,0])):
+    def blit_color(self, x_y, x_h, color=BLACK):
         fillrect(self.graphic_var, x_y[0], x_y[1], x_h[0], x_h[1], color, color)
         
 
@@ -214,8 +218,8 @@ class Graphic: # The graphics variable, G1, G2 for example on hp prime
             strblit2(self.graphic_var, x, y1, 1, segment_g,
                      texture.graphic_var, texture.offset+text_x, 0, 1, segment_t)
 
-    def line(self, color, x1, y1, x2, y2):
-        line(self.graphic_var, x1, y1, x2, y2, rgba(color))
+    def line(self, x1, y1, x2, y2, color=BLACK):
+        line(self.graphic_var, x1, y1, x2, y2, color)
 
     # FOR DEBUG
     # def blit_column(self, texture, x, y1, y2, text_x, text_y1, text_y2, scale, color):
@@ -235,37 +239,20 @@ class Graphic: # The graphics variable, G1, G2 for example on hp prime
         self.offset += width_height[0]
         return texture
 
-    def __setitem__(self, key, value):
-        if not isinstance(key, tuple) or len(key) != 2:
-            raise TypeError("Key must be a tuple of two integers (x, y).")
-        x, y = key
-        self.draw_pixel((x, y), value)
-
-    def __getitem__(self, key):
-        x, y = key
-        return self.get_pixel([x, y])
-
     def draw_pixel(self, x_y, color):
-        if isinstance(color, (list, tuple)):
-            color = rgba(color)
-
         x = x_y[0]
         y = x_y[1]
-        if x < 0 or x >= self.width or y < 0 or y >= self.height:
-            raise ValueError('Try to add pixel to a graphic outside his limits :', x, y, self.width, self.height)
-        else:
-            pixon(self.graphic_var, x, y, color)
+        
+        pixon(self.graphic_var, x, y, color)
 
     # SUPER SLOW
-    def get_pixel(self, x_y):
-        x = x_y[0]
-        y = x_y[1]
+    def get_pixel(self, x, y):
         if x < 0 or x >= self.width or y < 0 or y >= self.height:
             raise ValueError('Try to get pixel to a graphic outside his limits :', x, y, self.width, self.height)
         else:
             return eval("GETPIX_P(G{},{},{})".format(self.graphic_var, x, y))
 
-    def draw_string(self, string, x=0, y=0, color=rgba([255,255,255])):
+    def draw_string(self, string, x=0, y=0, color=WHITE):
         string = str(string)
         textout(self.graphic_var, x, y, string, color)
 
@@ -286,15 +273,10 @@ class TextureArray:
         self.total_height = self.height
 
     def draw_pixel(self, x_y, color):
-        if isinstance(color, (list, tuple)):
-            color = rgba(color)
-            
         x = x_y[0]
         y = x_y[1]
-        if x < 0 or x >= self.width or y < 0 or y >= self.height:
-            raise ValueError('Try to add pixel to a texture outside his limits :', x, y, self.width, self.height)
-        else:
-            pixon(self.graphic_var, x+self.offset, y, color)
+        
+        pixon(self.graphic_var, x+self.offset, y, color)
 
     def get_pixel(self, x_y):
         x = x_y[0]
@@ -367,28 +349,3 @@ class TextureArray:
     def __len__(self):
         # Return width for len(tex)
         return self.width
-
-    def __getitem__(self, key):
-        if isinstance(key, tuple):  # Accessing specific pixel
-            return self.get_pixel(key)
-        elif isinstance(key, int):  # Accessing a row (still can work as a list)
-            if key < 0 or key >= self.height:
-                raise ValueError("Row index out of bounds.")
-            return [self.get_pixel((x, key)) for x in range(self.width)]  # List of pixels in the row
-        else:
-            raise TypeError("Invalid key type. Must be a tuple (x, y) or int (row).")
-
-    def __setitem__(self, key, value):
-        if isinstance(key, tuple):  # Specific pixel
-            x, y = key
-            self.draw_pixel((x, y), value)
-        elif isinstance(key, int):  # Row
-            if key < 0 or key >= self.height:
-                raise ValueError("Row index out of bounds.")
-            for x in range(self.width):
-                self.draw_pixel((x, key), value)
-        else:
-            raise TypeError("Invalid key type. Must be a tuple (x, y) or int (row).")
-
-
-
