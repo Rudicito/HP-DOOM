@@ -1,4 +1,12 @@
-from hpprime import eval
+from sys import platform
+
+if platform == "HP Prime":
+    from hpprime import eval
+else:
+    def eval(string):
+        return 1000
+
+
 class Clock:
     def __init__(self):
         self.dt = 100

@@ -1,7 +1,12 @@
-import ustruct as struct
 from vector2 import Vector2 as vec2
 from data_types import *
 from graphics import rgba
+
+from sys import platform
+if platform == "HP Prime":
+    import ustruct as struct
+else:
+    import struct
 
 
 class WADReader:

@@ -1,5 +1,4 @@
 import umath as math
-from vector2 import Vector2 as vec2
 
 ##########################################
 

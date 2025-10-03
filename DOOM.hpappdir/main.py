@@ -1,5 +1,4 @@
 from wad_data import WADData
-from settings import *
 from player import Player
 from bsp import BSP
 from seg_handler import SegHandler
@@ -77,6 +76,8 @@ try:
     doom = DoomEngine()
     print("Loading finished!")
     show_mem()
+    # for name, graphic in doom.graphics.graphics.items():
+    #     print(name + " have " + str(graphic.texture_array_len) + " of textures in.")
     doom.run()
 except KeyboardInterrupt:
     pass

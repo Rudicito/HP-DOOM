@@ -1,5 +1,5 @@
 from settings import *
-
+from vector2 import Vector2 as vec2
 
 class BSP:
     SUB_SECTOR_IDENTIFIER = 0x8000  # 2**15 = 32768

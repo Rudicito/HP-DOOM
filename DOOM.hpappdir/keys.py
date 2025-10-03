@@ -1,4 +1,9 @@
-from hpprime import keyboard
+from sys import platform
+if platform == "HP Prime":
+    from hpprime import keyboard
+else:
+    def keyboard():
+        return 0
 
 class Keys:
     def __init__(self):

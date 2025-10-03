@@ -1,6 +1,4 @@
 from settings import *
-from data_types import PatchHeader
-from show_mem import *
 
 class Patch:
     def __init__(self, asset_data, name, graphic,  is_sprite=True):

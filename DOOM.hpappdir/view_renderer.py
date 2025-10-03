@@ -1,7 +1,13 @@
 from settings import *
-import urandom as random
-from urandom import randrange as rnd
 from asset_data import get_anim_tex_list
+
+from sys import platform
+if platform == "HP Prime":
+    import urandom as random
+    from urandom import randrange as rnd
+else:
+    import random
+    from random import randrange as rnd
 
 
 class ViewRenderer:

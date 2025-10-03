@@ -1,11 +1,7 @@
-import sys
 from settings import *
 
-WHITE_TRANSPARENT = 0xFFFFFFFF
-WHITE = 0xFFFFFF
-BLACK = 0x000000
-
-if sys.platform == "HP Prime":
+from sys import platform
+if platform == "HP Prime":
     from hpprime import pixon, dimgrob, eval, fillrect, rect, textout, strblit2, line
 
     # FOR DEBUG
@@ -20,6 +16,9 @@ else:
     
     def dimgrob(*args):
         pass
+    
+    def eval(*args):
+        pass
 
     def fillrect(*args):
         pass
@@ -30,15 +29,17 @@ else:
         pass
 
     def strblit2(graphic, x, y, width, height, graphic2, sx, sy, swidth, sheight):
-        print(
-            "strblit2 called: \nx={}, y={}, width={}, height={} \nx={}, y={}, width={}, height={}\n".format(
-                x, y, width, height, sx, sy, swidth, sheight))
+        # print(
+        #     "strblit2 called: \nx={}, y={}, width={}, height={} \nx={}, y={}, width={}, height={}\n".format(
+        #         x, y, width, height, sx, sy, swidth, sheight))
+        pass
     
     def line(*args):
         pass
 
-
-
+WHITE_TRANSPARENT = 0xFFFFFFFF
+WHITE = 0xFFFFFF
+BLACK = 0x000000
 
 def rgba(rgba):
     """
@@ -111,6 +112,7 @@ class Graphic: # The graphics variable, G1, G2 for example on hp prime
         self.height = height
         # x offset where the next texture going to start
         self.offset = 0
+        self.texture_array_len = 0
 
     def init_graphic(self, width=None, height=None):
         if self.graphic_var == 0:
@@ -237,6 +239,7 @@ class Graphic: # The graphics variable, G1, G2 for example on hp prime
 
         texture = TextureArray(self.graphic_var, self.offset, width_height)
         self.offset += width_height[0]
+        self.texture_array_len += 1
         return texture
 
     def draw_pixel(self, x_y, color):
@@ -258,6 +261,7 @@ class Graphic: # The graphics variable, G1, G2 for example on hp prime
 
 
 class TextureArray:
+    __slots__ = ('graphic_var', 'offset', 'shape', 'width', 'height', 'duplicate_number', 'total_height')
     def __init__(self, graphic_var, offset, shape):
         self.graphic_var = graphic_var
         # Offset is up left of the texture, value is about the x value
