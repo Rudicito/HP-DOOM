@@ -127,7 +127,7 @@ class Graphic: # The graphics variable, G1, G2 for example on hp prime
         # The python version of dimgrob seems to have issue to initialize the graphics var, (issue to fill with transparency color)
         # Use the hpppl one instead
         # dimgrob(self.graphic_var, self.width, self.height, rgba([255,255,255,0]))
-        eval("DIMGROB_P(G"+ str(self.graphic_var)+ ", "+ str(self.width)+ ", "+ str(self.height)+ " ,"+ str(WHITE_TRANSPARENT)+ ")")
+        dimgrob(self.graphic_var, self.width, self.height, WHITE_TRANSPARENT)
 
     def blit(self, graph, x_y=None):
         if x_y is None:
