@@ -1,4 +1,5 @@
 from settings import *
+from gc import collect
 
 class Patch:
     def __init__(self, asset_data, name, graphic,  is_sprite=True):
@@ -18,6 +19,7 @@ class Patch:
         #         )
 
     def load_patch_columns(self, patch_name):
+        collect()
         reader = self.asset_data.reader
         patch_index = self.asset_data.get_lump_index(patch_name)
         patch_offset = reader.directory[patch_index]['lump_offset']
@@ -150,7 +152,7 @@ class AssetData:
         }
         print("Wall textures loaded!")
         # show_mem("wall textures")
-        
+
         # flat textures
         ordered_flats, self.flat_textures = self.get_flats()
         print("Flats textures loaded!")
@@ -165,10 +167,10 @@ class AssetData:
 
         for key, texture in self.wall_textures.items():
             texture.duplicate(1)
-            
+
         # Animated flats
         self.animated_flats = self.get_animated_texture(ordered_flats, self.animated_flat_ranges)
-        
+
     def get_flats(self, start_marker='F_START', end_marker='F_END'):
         idx1 = self.get_lump_index(start_marker) + 1
         idx2 = self.get_lump_index(end_marker)
@@ -213,7 +215,7 @@ class AssetData:
         }
         return sprites
 
-    # animated walls and flats are hardcoded: 
+    # animated walls and flats are hardcoded:
     # https://github.com/id-Software/DOOM/blob/a77dfb96cb91780ca334d0d4cfd86957558007e0/linuxdoom-1.10/p_spec.c#L101-L132
 
     # structure: (endTexture, startTexture, speed)
@@ -246,4 +248,3 @@ class AssetData:
 
         return animated_texture
 
-    
