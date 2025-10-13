@@ -2,7 +2,7 @@ from settings import *
 
 from sys import platform
 if platform == "HP Prime":
-    from hpprime import pixon, dimgrob, eval, fillrect, rect, textout, strblit2, line, getpix
+    from hpprime import pixon, dimgrob, fillrect, rect, textout, strblit2, line, getpix
 
     # FOR DEBUG
 
