@@ -1,5 +1,10 @@
 from settings import *
-from gc import collect
+
+if s.IS_EMULATOR:
+    from gc import collect
+else:
+    def collect():
+        pass
 
 class Patch:
     def __init__(self, asset_data, name, graphic,  is_sprite=True):
