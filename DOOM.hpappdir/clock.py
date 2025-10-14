@@ -22,12 +22,12 @@ class Clock:
 
     def get_time(self):
         return ticks()
-
+    
     def cycles(self, interval, number):
         if number < 0:
             raise ValueError("Number cannot be negative")
         if not isinstance(number, int):
             raise ValueError("Number must be an integer")
-
+        
         a = int(self.time // interval)
         return a % number

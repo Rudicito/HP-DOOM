@@ -13,10 +13,10 @@ if platform == "HP Prime":
 else:
     def pixon(*args):
         pass
-
+    
     def dimgrob(*args):
         pass
-
+    
     def eval(*args):
         pass
 
@@ -24,7 +24,7 @@ else:
         pass
     def rect(*args):
         pass
-
+    
     def textout(*args):
         pass
 
@@ -33,7 +33,7 @@ else:
         #     "strblit2 called: \nx={}, y={}, width={}, height={} \nx={}, y={}, width={}, height={}\n".format(
         #         x, y, width, height, sx, sy, swidth, sheight))
         pass
-
+    
     def line(*args):
         pass
 
@@ -124,9 +124,6 @@ class Graphic: # The graphics variable, G1, G2 for example on hp prime
         if height is not None:
             self.height = height
 
-        # The python version of dimgrob seems to have issue to initialize the graphics var, (issue to fill with transparency color)
-        # Use the hpppl one instead
-        # dimgrob(self.graphic_var, self.width, self.height, rgba([255,255,255,0]))
         dimgrob(self.graphic_var, self.width, self.height, WHITE_TRANSPARENT)
 
     def blit(self, graph, x_y=None):
@@ -141,13 +138,13 @@ class Graphic: # The graphics variable, G1, G2 for example on hp prime
 
     def blit_stretch(self, graph):
         strblit2(self.graphic_var, 0, 0, self.width, self.height, graph.graphic_var, 0, 0, graph.width, graph.height)
-
+        
     def blit_not_stretch(self, graph, x_y, w_h):
         strblit2(self.graphic_var, x_y[0], x_y[1], w_h[0], w_h[1], graph.graphic_var, 0, 0, graph.width, graph.height)
-
+        
     def blit_color(self, x_y, x_h, color=BLACK):
         fillrect(self.graphic_var, x_y[0], x_y[1], x_h[0], x_h[1], color, color)
-
+        
 
 
     def blit_texture(self, texture, x_y=None):
@@ -244,7 +241,7 @@ class Graphic: # The graphics variable, G1, G2 for example on hp prime
     def draw_pixel(self, x_y, color):
         x = x_y[0]
         y = x_y[1]
-
+        
         pixon(self.graphic_var, x, y, color)
 
     # SUPER SLOW
@@ -278,7 +275,7 @@ class TextureArray:
     def draw_pixel(self, x_y, color):
         x = x_y[0]
         y = x_y[1]
-
+        
         pixon(self.graphic_var, x+self.offset, y, color)
 
     def get_pixel(self, x_y):
