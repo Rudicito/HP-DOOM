@@ -1,5 +1,13 @@
 import umath as math
 
+from sys import platform
+
+if platform == "HP Prime":
+    from hpprime import eval
+    IS_EMULATOR = ": Emu" in eval("VERSION")
+else:
+    IS_EMULATOR = True
+
 ##########################################
 
 # The map to spawn in
@@ -43,7 +51,7 @@ SCREEN_H = 240
 # COLOR_KEY = (152, 0, 136)
 
 class Settings:
-    def __init__(self, render_flats, render_walls, load_sprites, scale, stretch, fov, player_speed, player_rot_speed, player_height):
+    def __init__(self, render_flats, render_walls, load_sprites, scale, stretch, fov, player_speed, player_rot_speed, player_height, is_emulator):
         
         self.RENDER_FLATS = render_flats
 
@@ -60,6 +68,8 @@ class Settings:
         self.PLAYER_SPEED = player_speed
         self.PLAYER_ROT_SPEED = player_rot_speed
         self.PLAYER_HEIGHT = player_height
+        
+        self.IS_EMULATOR = is_emulator
 
         self.set_screen_scale(self.SCALE)
 
@@ -88,4 +98,4 @@ class Settings:
         
 
 # Instance unique que les autres modules peuvent importer
-s = Settings(RENDER_FLATS, RENDER_WALLS, LOAD_SPRITES, SCALE, STRETCH, FOV, PLAYER_SPEED, PLAYER_ROT_SPEED, PLAYER_HEIGHT)
+s = Settings(RENDER_FLATS, RENDER_WALLS, LOAD_SPRITES, SCALE, STRETCH, FOV, PLAYER_SPEED, PLAYER_ROT_SPEED, PLAYER_HEIGHT, IS_EMULATOR)

@@ -8,7 +8,7 @@ if platform == "HP Prime":
         total = used + free
         if message:
             print(message)
-        print("Memory used :" + str(used) + " B (" + "{:.1f}%)\n".format(total / used))
+        print("Memory used :" + str(used) + " B (" + "{:.1f}%)\n".format(100 * used / total))
         
 else:
     def show_mem(*args):

@@ -1,9 +1,9 @@
 from sys import platform
 
 if platform == "HP Prime":
-    from hpprime import eval
+    from hpprime import ticks
 else:
-    def eval(string):
+    def ticks():
         return 1000
 
 
@@ -21,7 +21,7 @@ class Clock:
         return self.dt
 
     def get_time(self):
-        return int(eval("ticks"))
+        return ticks()
     
     def cycles(self, interval, number):
         if number < 0:

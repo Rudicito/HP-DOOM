@@ -1,5 +1,11 @@
 from settings import *
 
+if s.IS_EMULATOR:
+    from gc import collect
+else:
+    def collect():
+        pass
+
 class Patch:
     def __init__(self, asset_data, name, graphic,  is_sprite=True):
         self.graphic = graphic
@@ -18,6 +24,7 @@ class Patch:
         #         )
 
     def load_patch_columns(self, patch_name):
+        collect()
         reader = self.asset_data.reader
         patch_index = self.asset_data.get_lump_index(patch_name)
         patch_offset = reader.directory[patch_index]['lump_offset']

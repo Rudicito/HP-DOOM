@@ -2,7 +2,7 @@ from settings import *
 
 from sys import platform
 if platform == "HP Prime":
-    from hpprime import pixon, dimgrob, eval, fillrect, rect, textout, strblit2, line
+    from hpprime import pixon, dimgrob, fillrect, rect, textout, strblit2, line, getpix
 
     # FOR DEBUG
 
@@ -124,10 +124,7 @@ class Graphic: # The graphics variable, G1, G2 for example on hp prime
         if height is not None:
             self.height = height
 
-        # The python version of dimgrob seems to have issue to initialize the graphics var, (issue to fill with transparency color)
-        # Use the hpppl one instead
-        # dimgrob(self.graphic_var, self.width, self.height, rgba([255,255,255,0]))
-        eval("DIMGROB_P(G"+ str(self.graphic_var)+ ", "+ str(self.width)+ ", "+ str(self.height)+ " ,"+ str(WHITE_TRANSPARENT)+ ")")
+        dimgrob(self.graphic_var, self.width, self.height, WHITE_TRANSPARENT)
 
     def blit(self, graph, x_y=None):
         if x_y is None:
@@ -229,8 +226,7 @@ class Graphic: # The graphics variable, G1, G2 for example on hp prime
     #     fillrect(self.graphic_var, x, y1, 1, y2-y1, rgba(color), rgba(color))
 
     def blit_pixel(self, texture, g_x_y, t_x_y):
-        strblit2(self.graphic_var, g_x_y[0], g_x_y[1], 1, 1,
-                 texture.graphic_var, t_x_y[0]+texture.offset, t_x_y[1], 1, 1)
+        pixon(self.graphic_var, g_x_y[0], g_x_y[1], getpix(texture.graphic_var, t_x_y[0]+texture.offset, t_x_y[1]))
 
     def create(self, width_height):
 
@@ -253,7 +249,7 @@ class Graphic: # The graphics variable, G1, G2 for example on hp prime
         if x < 0 or x >= self.width or y < 0 or y >= self.height:
             raise ValueError('Try to get pixel to a graphic outside his limits :', x, y, self.width, self.height)
         else:
-            return eval("GETPIX_P(G{},{},{})".format(self.graphic_var, x, y))
+            return getpix(self.graphic_var, x, y)
 
     def draw_string(self, string, x=0, y=0, color=WHITE):
         string = str(string)
@@ -292,7 +288,7 @@ class TextureArray:
 
             return [255,0,0,255]
         else:
-            return eval("GETPIX_P(G{},{},{})".format(self.graphic_var, x+self.offset, y))
+            return getpix(self.graphic_var, x + self.offset, y)
 
     def blit(self, t_arr, x_y):
 
